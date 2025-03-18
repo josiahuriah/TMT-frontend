@@ -1,0 +1,37 @@
+.banner2{
+    display: flex;
+    flex-direction: row;
+    max-height: 480px;
+    flex-wrap: wrap;
+}
+
+.banner2-img{
+    display: block;
+    max-height: 480px;
+    flex: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+}
+
+.banner2-pic{
+    flex: 50%;
+}
+
+.banner2-card{
+    background: $p-color;
+    color: white;
+    flex: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: baseline;
+    padding: 8rem;
+}
+
+.banner2-card-text{
+    padding: 2rem 0;
+    font-style: italic;
+}
+

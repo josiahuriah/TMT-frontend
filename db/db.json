@@ -1,0 +1,62 @@
+{
+    "cars": [
+        {
+            "id": "1",
+            "title": "Economy",
+            "image": "/assets/economy.png",
+            "description": "Ford Focus, Honda Fit",
+            "rate": 75
+        },
+        {
+            "id": "2",
+            "title": "Intermediate",
+            "image": "/assets/intermediate.png",
+            "description": "Chevy Cruze, Kia Forte",
+            "rate": 95
+        },
+        {
+            "id": "3",
+            "title": "Full Size",
+            "image": "/assets/full-size.png",
+            "description": "Ford Fusion",
+            "rate": 110
+        },
+        {
+            "id": "4",
+            "title": "SUV",
+            "image": "/assets/suv.png",
+            "description": "Dodge Journey",
+            "rate": 125
+        },
+        {
+            "id": "5",
+            "title": "Luxury",
+            "image": "/assets/luxury.png",
+            "description": "Cadillac, Chevy Equinox",
+            "rate": 160
+        }
+    ],
+    "carousel": [
+        {
+            "id": "1",
+            "image": "/assets/carousel1.jpeg",
+            "alt": "Tropical beach background with summer landscape",
+            "bannertitle": "Cruise carefree, Explore endlessly.",
+            "bannersubtitle": "With our wide range of well maintained vehicles, from sedans to spacious SUV's for exploring every hidden gem."
+        },
+        {
+            "id": "2",
+            "image": "/assets/carousel2.jpeg",
+            "alt": "Beautiful view of Bahamas islands from above",
+            "bannertitle": "Vacation in Paradise.",
+            "bannersubtitle": "Coming Soon"
+        },
+        {
+            "id": "3",
+            "image": "/assets/carousel3.jpeg",
+            "alt": "Aerial top down view of the famous Dean's Blue Hole on Long Island, Bahamas",
+            "bannertitle": "Stressfree Consignment.",
+            "bannersubtitle": "Coming Soon"
+        }
+    ]
+}

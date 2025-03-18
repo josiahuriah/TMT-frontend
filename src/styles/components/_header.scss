@@ -1,0 +1,17 @@
+.header {
+    display: flex;
+    flex-direction: row;
+    max-width: 100%;
+    justify-content: space-between;
+    margin: $l-size $xl-size;
+}
+
+.header-menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.header-item {
+    padding: 2rem;
+}

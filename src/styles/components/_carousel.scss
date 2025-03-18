@@ -1,0 +1,38 @@
+.carousel {
+    position: relative;
+    width: 100%;
+    height: 800px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: var(--bg-image);
+        background-size: cover;
+        background-position: center;
+      }
+    
+      .overlay {
+        position: absolute;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.5); // Dark overlay
+      }
+    
+      .content {
+        position: relative;
+        z-index: 10;
+        text-align: center;
+        font-size: $xl-size;
+      }
+
+      .bannersubtitle {
+        font-size: $l-size;
+      }
+}

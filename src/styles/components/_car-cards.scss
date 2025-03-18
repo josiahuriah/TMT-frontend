@@ -1,0 +1,55 @@
+.car-card {
+    min-width: 360px;
+    height: 560px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: 60px 40px;
+}
+
+.car-cards {
+    display: flex;
+    flex-direction: row;
+    margin: 60 80px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.car-image {
+    display: block;
+    max-width: 240px;
+    max-height: 240px;
+    object-fit:contain;
+}
+
+.car-conatiner {
+    max-width: 360px;
+}
+
+.car-title {
+    font-size: $l-size;
+}
+
+.car-subtitle {
+    font-size: $m-size;
+}
+
+.car-rate {
+    font-size: $l-size;
+    font-weight: 600;
+}
+
+.car-subrate {
+    font-size: $m-size;
+    font-weight: 300;
+}
+
+.car-cards-title{
+    font-size: $xl-size;
+    color: $p-color;
+    font-weight: 800;
+    text-align: center;
+    margin-top: 6rem;
+}

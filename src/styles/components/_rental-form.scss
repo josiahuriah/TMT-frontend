@@ -1,0 +1,78 @@
+.rental-form {
+    font-size: $l-size;
+}
+.rental-form-field {
+    font-size: $l-size;
+}
+.rental-form-label {
+    font-size: $m-size;
+}
+.rental-form-header {
+    font-size: $l-size;
+    color: $p-color;
+}
+.input-form-field {
+    font-size: $m-size;
+    height: $l-size;
+}
+.name-field {
+    min-width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content:baseline;
+}
+.contact-field {
+    display: flex;
+    flex-direction: row;
+    justify-content:baseline;
+}
+.firstname {
+    flex: 2;
+}
+.lastname {
+    flex: 2;
+}
+.email {
+    flex: 2;
+}
+.home {
+    flex: 1;
+}
+.cell {
+    flex: 1;
+}
+.rental-date {
+    font-size: $m-size;
+}
+.rental-form > button {
+    min-width: 100%;
+    min-height: $l-size;
+    font-size: $m-size;
+}
+#date {
+    min-width: 100%;
+    min-height: $l-size;
+    font-size: $m-size;
+}
+.rdp-multiple_months {
+    min-width: 100%;
+    min-height: $l-size;
+    font-size: $m-size;
+}
+.rental-select {
+    min-width: 800px;
+    flex: 1;
+    font-size: $m-size;
+}
+.additionaldriver {
+    height: 6rem;
+}
+
+.user-terms {
+    text-align: center;
+    font-size: $l-size;
+}
+.user-terms-text {
+    text-align: center;
+    font-size: $m-size;
+}
