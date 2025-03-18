@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -12,68 +12,69 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Button } from "./ui/button.jsx";
 import Autoplay from "embla-carousel-autoplay";
 
+const carouselData = [
+  {
+    id: 1,
+    bannertitle: "Cruise carefree, Explore endlessly",
+    bannersubtitle: "With our wide range of well maintained vehicles",
+    image: "/assets/carousel1.jpeg", 
+  },
+  {
+    id: 2,
+    bannertitle: "Vacation in Paradise",
+    bannersubtitle: "Ride in Style",
+    image: "/assets/carousel2.jpeg",
+  },
+  {
+    id: 3,
+    bannertitle: "Stressfree Consignment",
+    bannersubtitle: "Coming Soon",
+    image: "/assets/carousel3.jpeg",
+  },
+];
 
 const CarouselComponent = () => {
-    const [carCards, setCarCards] = useState([]);
-    const [loading, setLoading] = useState(true);
+  const [carCards] = useState(carouselData); 
 
-    useEffect(() => {
-        const fetchCars = async () => {
-          try {
-            const response = await fetch(`http://localhost:4000/carousel`);
-            const data = await response.json();
-            setCarCards(data);
-          } catch (error) {
-            console.error("Error fetching cars:", error);
-          } finally {
-            setLoading(false);
-          }
-        };
-    
-        fetchCars();
-      }, []);
-    
-      if (loading) {
-        return <p>Loading cars...</p>;
-      }
-    
-      return (
-        <div>
-          <h2 className="banner1">Your Island's Ultimate Stop for Car Rentals, Stays and more!</h2>
-          <Carousel
-          plugins={[
-            Autoplay({
-                delay:5000,
-            })
-          ]}
-          >
-            <CarouselContent>
-              {carCards.map((carousel) => (
-                <CarouselItem key={carousel.id}>
-                  <Card
-                  className='carousel' 
-                  style={{ "--bg-image": `url(${carousel.image})` }}
-                    ><div className="overlay"></div>
-                    <CardHeader className='content'>
-                      <CardTitle>{carousel.bannertitle}</CardTitle>
-                      <CardDescription className='bannersubtitle'>{carousel.bannersubtitle}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <div>
-                        </div>
-                    </CardContent>
-                    <CardFooter>
-                      <Button>Book Now</Button>
-                    </CardFooter>
-                  </Card>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
-        </div>
-      );
-    };
-    
-    export default CarouselComponent;
+  return (
+    <div>
+      <h2 className="banner1">Your Island's Ultimate Stop for Car Rentals, Stays and more!</h2>
+      <Carousel
+        plugins={[
+          Autoplay({
+            delay: 5000,
+          }),
+        ]}
+      >
+        <CarouselContent>
+          {carCards.map((carousel) => (
+            <CarouselItem key={carousel.id}>
+              <Card
+                className="carousel"
+                style={{ "--bg-image": `url(${carousel.image})` }}
+              >
+                <div className="overlay"></div>
+                <CardHeader className="carousel-text-content">
+                  <CardTitle className="carousel-text-title">{carousel.bannertitle}</CardTitle>
+                  <CardDescription className="bannersubtitle">
+                    {carousel.bannersubtitle}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div></div>
+                </CardContent>
+                <CardFooter>
+                  <Button>Book Now</Button>
+                </CardFooter>
+              </Card>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
+    </div>
+  );
+};
+
+export default CarouselComponent;

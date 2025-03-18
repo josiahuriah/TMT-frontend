@@ -9,7 +9,7 @@
 
 import React from 'react';
 import {Link, NavLink} from 'react-router-dom';
-import TMTLogo from '../assets/logo1.png';
+import TMTLogo from '/assets/logo3.png';
 import { Button } from "@/components/ui/button"
 
 
