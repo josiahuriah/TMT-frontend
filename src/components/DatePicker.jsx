@@ -1,10 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { forwardRef } from "react";
 import { addDays, format, differenceInDays, isBefore } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
-// import { DateRange } from "react-day-picker";
-
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -14,13 +12,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export function DatePickerWithRange({ className }) {
+export const DatePickerWithRange = forwardRef(({ className, value, onChange }, ref) => {
   const today = new Date();
-
-  const [date, setDate] = useState({
-    from: today,
-    to: addDays(today, 10),
-  });
+  const date = value || { from: today, to: addDays(today, 10) };
 
   const handleSelect = (selectedRange) => {
     if (!selectedRange?.from) return;
@@ -28,18 +22,11 @@ export function DatePickerWithRange({ className }) {
     let fromDate = selectedRange.from;
     let toDate = selectedRange.to;
 
-    // Ensure "from" date is not before today
-    if (isBefore(fromDate, today)) {
-      fromDate = today;
-    }
-
-    // If the "to" date is before today, reset to undefined
-    if (toDate && isBefore(toDate, today)) {
-      toDate = undefined;
-    }
+    if (isBefore(fromDate, today)) fromDate = today;
+    if (toDate && isBefore(toDate, today)) toDate = undefined;
 
     const updatedRange = { from: fromDate, to: toDate };
-    setDate(updatedRange);
+    onChange(updatedRange);
 
     if (updatedRange.from && updatedRange.to) {
       const days = differenceInDays(updatedRange.to, updatedRange.from);
@@ -49,16 +36,21 @@ export function DatePickerWithRange({ className }) {
   };
 
   return (
-    <div className={cn("grid gap-2", className)}>
+    <div className={cn("grid gap-2 relative", className)}> {/* Add relative here */}
       <Popover>
         <PopoverTrigger asChild>
           <Button
+            ref={ref}
             id="date"
             variant="outline"
             className={cn(
               "w-[300px] justify-start text-left font-normal",
               !date && "text-muted-foreground"
             )}
+            onClick={(e) => {
+              e.stopPropagation();
+              console.log("Date picker button clicked");
+            }}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
             {date?.from ? (
@@ -75,7 +67,12 @@ export function DatePickerWithRange({ className }) {
             )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
+        <PopoverContent
+          className="w-auto p-0"
+          side="bottom"
+          align="start"
+          sideOffset={8}
+        >
           <Calendar
             initialFocus
             mode="range"
@@ -83,10 +80,12 @@ export function DatePickerWithRange({ className }) {
             selected={date}
             onSelect={handleSelect}
             numberOfMonths={2}
-            disabled={{ before: today }} // Disable past dates
+            disabled={{ before: today }}
           />
         </PopoverContent>
       </Popover>
     </div>
   );
-}
+});
+
+DatePickerWithRange.displayName = "DatePickerWithRange";

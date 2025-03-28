@@ -13,10 +13,10 @@ const Footer = () => (
         <div className='footer2'>
             <div className='footer3'>
                 <h1>Quick Links</h1>
-                <NavLink to="/" className={'header-item'} >Home</NavLink><br/>
-                <NavLink to="/rental" className={'header-item'} >Car Rentals</NavLink><br/>
-                <NavLink to="/about" className={'header-item'} >About Us</NavLink><br/>
-                <NavLink to="/contact" className={'header-item'} >Contact</NavLink><br/>
+                <NavLink to="/" className={'footer-item'} >Home</NavLink><br/>
+                <NavLink to="/rental" className={'footer-item'} >Car Rentals</NavLink><br/>
+                <NavLink to="/about" className={'footer-item'} >About Us</NavLink><br/>
+                <NavLink to="/contact" className={'footer-item'} >Contact</NavLink><br/>
             </div>
             <div className='footer4'>
                 <h1>Get In Touch</h1>

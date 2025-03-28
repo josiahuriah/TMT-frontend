@@ -1,0 +1,270 @@
+
+.about-us {
+  max-width: 1200px; // Constrain width for readability
+  margin: 0 auto; // Center the content
+  padding: 2rem; // Default padding
+
+  .about-header {
+    text-align: center;
+    margin-bottom: 4rem;
+
+    .about-logo {
+      width: 150px; // Default logo size
+      height: auto;
+      margin-bottom: 1rem;
+    }
+
+    .about-title {
+      font-size: $xl-size * 1.5; // e.g., 48px
+      color: $p-color;
+      font-weight: 800;
+    }
+  }
+
+  .about-mission {
+    margin-bottom: 4rem;
+    text-align: center;
+
+    .mission-title {
+      font-size: $xl-size; // e.g., 32px
+      color: #333; // Darker for contrast
+      margin-bottom: 1rem;
+    }
+
+    .mission-text {
+      font-size: $l-size; // e.g., 16px
+      color: #666; // Softer color for body text
+      line-height: 1.6;
+      max-width: 800px; // Limit width for readability
+      margin: 0 auto;
+    }
+  }
+
+  .about-team {
+    margin-bottom: 4rem;
+
+    .team-title {
+      font-size: $xl-size; // e.g., 32px
+      color: #333;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .team-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem; // Space between team members
+
+      .team-member {
+        flex: 1;
+        min-width: 250px; // Minimum card width
+        max-width: 300px; // Maximum card width
+        text-align: center;
+
+        .team-image {
+          width: 100%;
+          height: 200px; // Fixed height for uniformity
+          object-fit: cover; // Crop images cleanly
+          border-radius: 8px; // Rounded corners
+          margin-bottom: 1rem;
+        }
+
+        .member-name {
+          font-size: $l-size * 1.25; // e.g., 20px
+          color: #333;
+          margin-bottom: 0.5rem;
+        }
+
+        .member-role {
+          font-size: $m-size; // e.g., 14px
+          color: #666;
+        }
+      }
+    }
+  }
+
+  .about-cta {
+    text-align: center;
+    padding: 3rem 0;
+    background: #f5f5f5; // Light background for contrast
+    border-radius: 8px;
+
+    .cta-title {
+      font-size: $xl-size; // e.g., 32px
+      color: #333;
+      margin-bottom: 1rem;
+    }
+
+    .cta-text {
+      font-size: $l-size; // e.g., 16px
+      color: #666;
+      margin-bottom: 2rem;
+    }
+
+    .cta-button {
+      padding: 0.75rem 2rem;
+      font-size: $l-size;
+      background-color: $p-color;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: darken($p-color, 10%);
+      }
+    }
+  }
+
+  // Tablet screens (768px and below)
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+
+    .about-header {
+      margin-bottom: 3rem;
+
+      .about-logo {
+        width: 120px; // Smaller logo
+      }
+
+      .about-title {
+        font-size: $xl-size; // e.g., 32px
+      }
+    }
+
+    .about-mission {
+      margin-bottom: 3rem;
+
+      .mission-title {
+        font-size: 1.5rem; // e.g., 24px
+      }
+
+      .mission-text {
+        font-size: 0.9rem; // e.g., 14.4px
+      }
+    }
+
+    .about-team {
+      margin-bottom: 3rem;
+
+      .team-title {
+        font-size: 1.5rem; // e.g., 24px
+      }
+
+      .team-grid {
+        gap: 1.5rem;
+
+        .team-member {
+          min-width: 200px; // Slightly smaller
+          max-width: 250px;
+
+          .team-image {
+            height: 160px; // Smaller image
+          }
+
+          .member-name {
+            font-size: 1rem; // e.g., 16px
+          }
+
+          .member-role {
+            font-size: 0.8rem; // e.g., 12.8px
+          }
+        }
+      }
+    }
+
+    .about-cta {
+      padding: 2rem 0;
+
+      .cta-title {
+        font-size: 1.5rem; // e.g., 24px
+      }
+
+      .cta-text {
+        font-size: 0.9rem; // e.g., 14.4px
+      }
+
+      .cta-button {
+        padding: 0.6rem 1.5rem;
+        font-size: 0.9rem;
+      }
+    }
+  }
+
+  // Mobile screens (480px and below)
+  @media (max-width: 480px) {
+    padding: 1rem;
+
+    .about-header {
+      margin-bottom: 2rem;
+
+      .about-logo {
+        width: 100px; // Even smaller logo
+      }
+
+      .about-title {
+        font-size: 1.5rem; // e.g., 24px
+      }
+    }
+
+    .about-mission {
+      margin-bottom: 2rem;
+
+      .mission-title {
+        font-size: 1.25rem; // e.g., 20px
+      }
+
+      .mission-text {
+        font-size: 0.875rem; // e.g., 14px
+      }
+    }
+
+    .about-team {
+      margin-bottom: 2rem;
+
+      .team-title {
+        font-size: 1.25rem; // e.g., 20px
+      }
+
+      .team-grid {
+        gap: 1rem;
+
+        .team-member {
+          min-width: 100%; // Full width on mobile
+          max-width: none;
+
+          .team-image {
+            height: 140px; // Smaller image
+          }
+
+          .member-name {
+            font-size: 0.9rem; // e.g., 14.4px
+          }
+
+          .member-role {
+            font-size: 0.75rem; // e.g., 12px
+          }
+        }
+      }
+    }
+
+    .about-cta {
+      padding: 1.5rem 0;
+
+      .cta-title {
+        font-size: 1.25rem; // e.g., 20px
+      }
+
+      .cta-text {
+        font-size: 0.875rem; // e.g., 14px
+      }
+
+      .cta-button {
+        padding: 0.5rem 1.2rem;
+        font-size: 0.875rem;
+      }
+    }
+  }
+}

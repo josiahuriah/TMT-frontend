@@ -53,3 +53,20 @@
     text-align: center;
     margin-top: 6rem;
 }
+
+@media (max-width: 768px) {
+  
+    .car-card {
+      margin: 20px 0; // Reduce margin, remove horizontal margin (handled by gap)
+    }
+  }
+
+  @media (max-width: 480px) {
+    .car-cards {
+      margin: 20px 10px; // Further reduce margin
+    }
+  
+    .car-card {
+      margin: 10px 0; // Minimal margin
+    }
+  }

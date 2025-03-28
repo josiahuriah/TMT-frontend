@@ -36,6 +36,8 @@ const carouselData = [
 const CarouselComponent = () => {
   const [carCards] = useState(carouselData); 
 
+  
+
   return (
     <div>
       <h2 className="banner1">Your Island's Ultimate Stop for Car Rentals, Stays and more!</h2>
@@ -70,8 +72,6 @@ const CarouselComponent = () => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
       </Carousel>
     </div>
   );

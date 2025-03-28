@@ -1,0 +1,94 @@
+.footer {
+    background-color: #333; // Dark background for contrast
+    color: #fff; // White text for readability
+    padding: 40px 20px; // Vertical and horizontal padding
+    font-family: 'Arial', sans-serif; // Default font, adjust as needed
+  
+    // Flexbox for overall layout
+    display: flex;
+    flex-wrap: wrap; // Wrap on smaller screens
+    justify-content: space-between; // Space sections evenly
+    gap: 20px; // Space between flex items
+    align-items: center;
+    margin: 0 auto;
+  
+    .footer1 {
+      flex: 1; // Takes up available space
+      min-width: 250px; // Minimum width for responsiveness
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start; // Align logo and text to the left
+  
+      .logo {
+        width: 100px; // Adjust logo size
+        height: auto;
+        margin-bottom: 15px; // Space below logo
+      }
+  
+      p {
+        font-size: 14px;
+        line-height: 1.5;
+        margin: 0; // Remove default margins
+      }
+    }
+  
+    .footer2 {
+      flex: 2; // Takes more space for two columns
+      min-width: 300px;
+      display: flex;
+      justify-content: space-between;
+      gap: 30px; // Space between footer3 and footer4
+  
+      .footer3,
+      .footer4 {
+        flex: 1; // Equal width for both columns
+        min-width: 150px; // Minimum width for smaller screens
+  
+        h1 {
+          font-size: 18px;
+          margin-bottom: 15px;
+          color: #fff; // Ensure header stands out
+        }
+  
+        p {
+          font-size: 14px;
+          margin: 5px 0; // Small spacing between lines
+        }
+  
+        .footer-item {
+          display: block; // Stack links vertically
+          color: #ccc; // Lighter color for links
+          text-decoration: none; // Remove underline
+          font-size: 14px;
+          margin-bottom: 10px; // Space between links
+          transition: color 0.3s ease; // Smooth hover effect
+  
+          &:hover {
+            color: #fff; // Brighten on hover
+          }
+  
+          &.active {
+            color: #fff; // Highlight active link
+            font-weight: bold; // Emphasize active link
+          }
+        }
+      }
+    }
+  
+    // Responsive adjustments
+    @media (max-width: 768px) {
+      flex-direction: column; // Stack sections vertically on small screens
+      align-items: center; // Center content
+      text-align: center; // Center text
+  
+      .footer1,
+      .footer2 {
+        width: 100%; // Full width on small screens
+      }
+  
+      .footer2 {
+        flex-direction: column; // Stack footer3 and footer4
+        align-items: center;
+      }
+    }
+  }

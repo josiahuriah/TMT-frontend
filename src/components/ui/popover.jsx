@@ -1,45 +1,60 @@
-import * as React from "react"
-import * as PopoverPrimitive from "@radix-ui/react-popover"
+"use client";
 
-import { cn } from "@/lib/utils"
+import * as React from "react";
+import * as PopoverPrimitive from "@radix-ui/react-popover";
+import { forwardRef, useState } from "react";
+import { cn } from "@/lib/utils";
 
-function Popover({
-  ...props
-}) {
-  return <PopoverPrimitive.Root data-slot="popover" {...props} />;
-}
-
-function PopoverTrigger({
-  ...props
-}) {
-  return <PopoverPrimitive.Trigger data-slot="popover-trigger" {...props} />;
-}
-
-function PopoverContent({
-  className,
-  align = "center",
-  sideOffset = 4,
-  ...props
-}) {
+export function Popover({ children, ...props }) {
+  const [open, setOpen] = useState(false);
   return (
-    <PopoverPrimitive.Portal>
-      <PopoverPrimitive.Content
-        data-slot="popover-content"
-        align={align}
-        sideOffset={sideOffset}
-        className={cn(
-          "bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-72 rounded-md border p-4 shadow-md outline-hidden",
-          className
-        )}
-        {...props} />
-    </PopoverPrimitive.Portal>
+    <PopoverPrimitive.Root
+      open={open}
+      onOpenChange={(newOpen) => {
+        console.log("Root onOpenChange:", newOpen);
+        setOpen(newOpen);
+      }}
+      {...props}
+    >
+      {children}
+    </PopoverPrimitive.Root>
   );
 }
 
-function PopoverAnchor({
-  ...props
-}) {
-  return <PopoverPrimitive.Anchor data-slot="popover-anchor" {...props} />;
-}
+export const PopoverTrigger = forwardRef(({ className, asChild = false, ...props }, ref) => (
+  <PopoverPrimitive.Trigger
+    ref={ref}
+    asChild={asChild}
+    data-slot="popover-trigger"
+    className={cn(className)}
+    {...props}
+  />
+));
+PopoverTrigger.displayName = "PopoverTrigger";
 
-export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor }
+export const PopoverContent = forwardRef(
+  ({ className, align = "center", sideOffset = 4, side = "top", ...props }, ref) => (
+    <PopoverPrimitive.Content
+      ref={ref}
+      data-slot="popover-content"
+      side={side}
+      align={align}
+      sideOffset={sideOffset}
+      className={cn(
+        "bg-white text-black z-[1000] w-auto rounded-md border p-4 shadow-md outline-none",
+        "data-[state=open]:animate-in data-[state=closed]:animate-out",
+        "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+        "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
+        "inherit",
+        "rental-calendar",
+        className
+      )}
+      {...props}
+    />
+  )
+);
+PopoverContent.displayName = "PopoverContent";
+
+export const PopoverAnchor = PopoverPrimitive.Anchor;
+
+// export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor };

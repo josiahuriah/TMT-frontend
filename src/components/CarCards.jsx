@@ -1,17 +1,24 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "./ui/card.jsx";
 import { Button } from "./ui/button.jsx";
 
 const CarCards = () => {
     const [carCards, setCarCards] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+
+    const API_URL =
+        process.env.NODE_ENV === "development"
+            ? "http://localhost:5001/car-categories"
+            : "https://tmt-rental-backend.onrender.com/car-categories";
   
     useEffect(() => {
       const fetchCars = async () => {
         try {
-          const response = await fetch(`http://localhost:4000/cars`);
+          const response = await fetch(API_URL);
           const data = await response.json();
           setCarCards(data);
         } catch (error) {
@@ -43,7 +50,11 @@ const CarCards = () => {
                     <p className="car-rate">${car.rate}<br></br><span className="car-subrate">+Tax Daily</span></p>
                   </CardContent>
                   <CardFooter>
-                    <Button className="car-card-button">Book Now</Button>
+                    <Button 
+                    className="car-card-button"
+                    onClick={() => navigate(`/rental/`)
+
+                    }>Book Now</Button>
                   </CardFooter>
                 </Card>
             ))}

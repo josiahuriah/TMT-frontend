@@ -1,17 +1,136 @@
+
 .header {
-    display: flex;
-    flex-direction: row;
-    max-width: 100%;
-    justify-content: space-between;
-    margin: $l-size $xl-size;
-}
+  display: flex;
+  flex-direction: row;
+  max-width: 100%;
+  justify-content: space-between;
+  margin: $l-size $xl-size;
+  align-items: center;
+  padding: 1rem;
 
-.header-menu {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
+  .logo {
+    width: 100px;
+    height: auto;
+  }
 
-.header-item {
-    padding: 2rem;
+  .header-menu-toggle {
+    position: relative; // For positioning the dropdown
+
+    .menu-icon {
+      width: 30px; // Adjust size as needed
+      height: auto;
+      cursor: pointer; // Indicate it’s clickable
+      display: none; // Hidden by default (shown on smaller screens)
+    }
+
+    .header-menu {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 1rem;
+
+      .header-item {
+        padding: 1rem;
+        text-decoration: none;
+        color: #333;
+        font-size: 16px;
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: #000;
+        }
+
+        &.active {
+          color: #000;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  .cta-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 16px;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+
+  // Tablet screens (768px and below)
+  @media (max-width: 768px) {
+    flex-direction: row; // Keep row layout but adjust contents
+    margin: $l-size 1rem;
+    padding: 0.5rem;
+
+    .logo {
+      width: 80px;
+    }
+
+    .header-menu-toggle {
+      .menu-icon {
+        display: block; // Show menu icon on smaller screens
+      }
+
+      .header-menu {
+        display: none; // Hide by default
+        &.open { // Class added when menu is open
+          display: flex;
+          flex-direction: column;
+          position: absolute;
+          top: 100%; // Below the icon
+          right: 0; // Align to the right
+          background-color: #fff; // White background for dropdown
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Subtle shadow
+          border-radius: 4px;
+          padding: 1rem;
+          z-index: 1000; // Ensure it’s above other content
+
+          .header-item {
+            padding: 0.75rem;
+            font-size: 14px;
+            color: #333;
+          }
+        }
+      }
+    }
+
+    .cta-button {
+      padding: 0.5rem 1rem;
+      font-size: 14px;
+    }
+  }
+
+  // Mobile screens (480px and below)
+  @media (max-width: 480px) {
+    margin: 0.5rem;
+
+    .logo {
+      width: 60px;
+    }
+
+    .header-menu-toggle {
+      .menu-icon {
+        width: 25px; // Smaller icon
+      }
+
+      .header-menu.open {
+        width: 150px; // Fixed width for small screens
+        .header-item {
+          font-size: 12px;
+          padding: 0.5rem;
+        }
+      }
+    }
+
+    .cta-button {
+      padding: 0.5rem 1rem;
+      font-size: 12px;
+    }
+  }
 }

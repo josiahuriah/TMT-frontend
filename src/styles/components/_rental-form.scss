@@ -1,78 +1,223 @@
+
 .rental-form {
-    font-size: $l-size;
-}
-.rental-form-field {
-    font-size: $l-size;
-}
-.rental-form-label {
-    font-size: $m-size;
-}
-.rental-form-header {
+  font-size: $l-size; // Default form font size
+  margin-bottom: 4rem; // Default bottom margin
+
+  .rental-form-field {
+    font-size: $l-size; // Field text size
+  }
+
+  .rental-form-label {
+    font-size: $m-size; // Label size
+  }
+
+  .rental-form-header {
     font-size: $l-size;
     color: $p-color;
-}
-.input-form-field {
-    font-size: $m-size;
-    height: $l-size;
-}
-.name-field {
-    min-width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content:baseline;
-}
-.contact-field {
-    display: flex;
-    flex-direction: row;
-    justify-content:baseline;
-}
-.firstname {
-    flex: 2;
-}
-.lastname {
-    flex: 2;
-}
-.email {
-    flex: 2;
-}
-.home {
-    flex: 1;
-}
-.cell {
-    flex: 1;
-}
-.rental-date {
-    font-size: $m-size;
-}
-.rental-form > button {
-    min-width: 100%;
-    min-height: $l-size;
-    font-size: $m-size;
-}
-#date {
-    min-width: 100%;
-    min-height: $l-size;
-    font-size: $m-size;
-}
-.rdp-multiple_months {
-    min-width: 100%;
-    min-height: $l-size;
-    font-size: $m-size;
-}
-.rental-select {
-    min-width: 800px;
-    flex: 1;
-    font-size: $m-size;
-}
-.additionaldriver {
-    height: 6rem;
-}
+  }
 
-.user-terms {
+  .input-form-field {
+    font-size: $m-size;
+    padding: 0.5rem; // Add padding for inputs
+    width: 100%; // Ensure full width within flex items
+  }
+
+  .name-field {
+    min-width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; // Fixed typo: baseline → space-between
+    gap: 1rem; // Space between first and last name
+  }
+
+  .contact-field {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; // Fixed typo: baseline → space-between
+    gap: 1rem; // Space between contact fields
+  }
+
+  .firstname,
+  .lastname {
+    flex: 1; // Equal width for name fields
+  }
+
+  .email {
+    flex: 2; // Wider for email
+  }
+
+  .home,
+  .cell {
+    flex: 1; // Equal width for phone fields
+  }
+
+  .rental-date {
+    font-size: $m-size;
+  }
+
+  .rental-form > button {
+    min-width: 100%;
+    min-height: $l-size * 2; // e.g., 32px
+    font-size: $m-size;
+  }
+
+  #date,
+  .rdp-multiple_months {
+    min-width: 100%;
+    min-height: $l-size * 2; // Adjusted height
+    font-size: $m-size;
+  }
+
+  .rental-select {
+    min-width: 100%; // Full width (removed 800px for responsiveness)
+    flex: 1;
+    font-size: $m-size;
+  }
+
+  .additionaldriver {
+    height: 6rem; // Default height
+  }
+
+  .user-terms {
     text-align: center;
     font-size: $l-size;
-}
-.user-terms-text {
+  }
+
+  .user-terms-text {
     text-align: center;
     font-size: $m-size;
+    line-height: 1.5; // Improve readability
+  }
+
+  .inherit {
+    position: absolute;
+  }
+
+  .relative {
+    position: relative;
+  }
+
+  .contact-info {
+    margin-bottom: 8rem; // Default margin
+  }
+
+  .vehicle-info {
+    margin: 12rem 0 4rem; // Default margin
+    font-size: $xl-size;
+    color: $p-color;
+    font-weight: 800;
+  }
+
+  .date-picker-container {
+    position: relative;
+
+    .rental-calendar {
+      position: absolute;
+    }
+  }
+
+  .next-button {
+    font-size: $m-size;
+    padding: 0.75rem 2rem; // Adjusted padding for consistency
+  }
+
+  // Tablet screens (768px and below)
+  @media (max-width: 768px) {
+    margin-bottom: 2rem; // Reduce bottom margin
+
+    .name-field,
+    .contact-field {
+      flex-direction: column; // Stack vertically
+      gap: 0.75rem; // Smaller gap
+    }
+
+    .firstname,
+    .lastname,
+    .email,
+    .home,
+    .cell {
+      flex: none; // Remove flex sizing
+      width: 100%; // Full width for each field
+    }
+
+    .input-form-field {
+      font-size: 0.9rem; // Slightly smaller text
+    }
+
+    .rental-form-label {
+      font-size: 0.9rem; // Smaller labels
+    }
+
+    .contact-info {
+        font-size: $m-size;
+      margin-bottom: 4rem; // Reduce margin
+    }
+
+    .vehicle-info {
+      margin: 6rem 0 2rem; // Reduce margins
+      font-size: 1.5rem; // e.g., 24px
+    }
+
+    .next-button {
+      padding: 0.6rem 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    .user-terms {
+      font-size: 1rem; // Slightly smaller
+    }
+
+    .user-terms-text {
+      font-size: 0.85rem; // Smaller text
+    }
+
+    .additionaldriver {
+      height: 4rem; // Reduce height
+    }
+  }
+
+  // Mobile screens (480px and below)
+  @media (max-width: 480px) {
+    margin-bottom: 1.5rem; // Further reduce margin
+
+    .name-field,
+    .contact-field {
+      gap: 0.5rem; // Minimal gap
+    }
+
+    .input-form-field {
+      font-size: 0.8rem; // Smaller text
+      padding: 0.4rem;
+    }
+
+    .rental-form-label {
+      font-size: 0.8rem; // Smaller labels
+    }
+
+    .contact-info {
+      margin-bottom: 2rem; // Minimal margin
+    }
+
+    .vehicle-info {
+      margin: 4rem 0 1.5rem; // Further reduced
+      font-size: 1.25rem; // e.g., 20px
+    }
+
+    .next-button {
+      padding: 0.5rem 1rem;
+      font-size: 0.8rem;
+    }
+
+    .user-terms {
+      font-size: 0.9rem;
+    }
+
+    .user-terms-text {
+      font-size: 0.75rem; // Minimal text size
+    }
+
+    .additionaldriver {
+      height: 3rem; // Compact height
+    }
+  }
 }

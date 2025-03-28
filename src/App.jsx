@@ -33,7 +33,6 @@ useEffect(() => {
       <CarouselComponent></CarouselComponent>
       <Banner2></Banner2>
       <CarCards></CarCards>
-      <Footer />
       </div>
     </>
   )
