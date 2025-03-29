@@ -72,7 +72,7 @@ export function RentalForm() {
 
   // Fetch vehicle categories from the backend
   useEffect(() => {
-    const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5001";
+    const API_BASE_URL = "https://tmt-rental-backend.onrender.com"
     console.log("Fetching from:", `${API_BASE_URL}/cars`);
     
     fetch(`${API_BASE_URL}/cars`)
