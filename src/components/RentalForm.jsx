@@ -73,6 +73,8 @@ export function RentalForm() {
   // Fetch vehicle categories from the backend
   useEffect(() => {
     const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5001";
+    console.log("Fetching from:", `${API_BASE_URL}/cars`);
+    
     fetch(`${API_BASE_URL}/cars`)
       .then((res) => {
         if (!res.ok) {
@@ -90,7 +92,7 @@ export function RentalForm() {
         setError(err.message);
         setLoading(false);
       });
-    }, []);
+  }, []);
 
   async function onSubmit(values) {
     console.log("Form Submitted:", values);
