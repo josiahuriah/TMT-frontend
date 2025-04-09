@@ -95,41 +95,70 @@ export function RentalForm() {
   }, []);
 
   async function onSubmit(values) {
-    console.log("Form Submitted:", values);
-    const { rentalperiod, vehicleclass } = values;
-
-    if (!values.termsAccepted) {
+    const { 
+      rentalperiod, 
+      vehicleclass, 
+      firstname, 
+      lastname, 
+      email, 
+      home, 
+      cell,
+      termsAccepted
+    } = values;
+  
+    // Check terms acceptance
+    if (!termsAccepted) {
       alert("Please accept the terms to proceed.");
       return;
     }
-
-    // Fetch available cars and reserve one
-    const days = values.rentalperiod.to ? differenceInDays(values.rentalperiod.to, values.rentalperiod.from) : 0;
+  
+    // Calculate rental days
+    const days = rentalperiod.to 
+      ? differenceInDays(rentalperiod.to, rentalperiod.from) 
+      : 1;
+  
     const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5001";
-    const carsResponse = await fetch(`${API_BASE_URL}/cars`);
-    const cars = await carsResponse.json();
-    const car = cars.find((c) => c.category === values.vehicleclass && c.quantity > 0);
-
-    if (car) {
-      const reserveResponse = await fetch(`${API_BASE_URL}/cars/reserve`, {
+  
+    try {
+      // Fetch available cars
+      const carsResponse = await fetch(`${API_BASE_URL}/cars`);
+      const cars = await carsResponse.json();
+      const car = cars.find(
+        (c) => c.category === vehicleclass && c.quantity > 0
+      );
+  
+      if (!car) {
+        alert("No available cars in this category.");
+        return;
+      }
+  
+      // Make reservation (POST request)
+      const reserveResponse = await fetch(`${API_BASE_URL}/reservations`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ car_id: car.id }),
+        body: JSON.stringify({
+          firstname,
+          lastname,
+          email,
+          home,
+          cell,
+          car_id: car.id,
+          start_date: rentalperiod.from,
+          end_date: rentalperiod.to,
+          total_price: days * car.price_per_day,
+        }),
       });
-
+  
       if (reserveResponse.ok) {
-        setSubmittedData({
-          ...values,
-          carId: car.id,
-          days,
-          totalPrice: days * car.price_per_day, 
-        });
-        setShowCheckout(true);
+        alert("Reservation successful!");
+        // Optionally reset form or navigate to a confirmation page
       } else {
-        alert("Failed to reserve the car. Please try again.");
+        const errorData = await reserveResponse.json();
+        alert(`Reservation failed: ${errorData.error}`);
       }
-    } else {
-      alert("No available cars in this category.");
+    } catch (err) {
+      console.error("Booking error:", err);
+      alert("An error occurred. Please try again later.");
     }
   }
 

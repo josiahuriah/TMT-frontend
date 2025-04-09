@@ -6,6 +6,7 @@ import RentalPage from '../components/RentalPage';
 import AboutUs from '../components/AboutUs';
 import Contact from '../components/Contact.jsx';
 import NotFoundPage from '../components/NotFoundPage';
+import AdminPage from '../components/AdminPage.jsx';
 import { Checkout } from '../components/Checkout.jsx';
 import App from '../App.jsx'
 
@@ -21,6 +22,7 @@ const AppRouter = () => (
             <Route path='/about-us' element={<AboutUs/>}></Route>
             <Route path='/contact' element={<Contact/>}></Route>
             <Route path='/contact' element={<Checkout/>}></Route>
+            <Route path='/admin/*' element={<AdminPage />} />
             <Route path='/*' element={<NotFoundPage/>}></Route>
         </Routes>
     </div>
