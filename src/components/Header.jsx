@@ -29,6 +29,7 @@ const Header = () => {
                     <NavLink to="/rental" className="header-item" onClick={toggleMenu}>Car Rentals</NavLink>
                     <NavLink to="/about-us" className="header-item" onClick={toggleMenu}>About Us</NavLink>
                     <NavLink to="/contact" className="header-item" onClick={toggleMenu}>Contact</NavLink>
+                    <NavLink to="/admin" className="header-item" onClick={toggleMenu}>Admin</NavLink>
                 </div>
             </div>
             <Button
