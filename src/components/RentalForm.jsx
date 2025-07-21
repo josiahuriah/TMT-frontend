@@ -148,44 +148,49 @@ async function onSubmit(values) {
       alert("No available cars in this category.");
       return;
     }
-
-    console.log("Selected car:", car);
-
-    // Prepare reservation data
-    const reservationData = {
-      firstname,
-      lastname,
-      email,
-      home,
-      cell,
-      car_id: car.id,
-      start_date: rentalperiod.from.toISOString().split('T')[0],
-      end_date: rentalperiod.to.toISOString().split('T')[0],
-      total_price: days * car.price_per_day,
-    };
-
-    console.log("Sending reservation data:", reservationData);
-
-    // Make reservation (POST request)
-    const reserveResponse = await fetch(`${API_BASE_URL}/reservations`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(reservationData),
-    });
-
-    console.log("Reservation response status:", reserveResponse.status);
-
-    if (reserveResponse.ok) {
-      const result = await reserveResponse.json();
-      console.log("Reservation success:", result);
-      alert("Reservation successful!");
-      // Optionally reset form or navigate to a confirmation page
-    } else {
-      const errorText = await reserveResponse.text();
-      console.error("Reservation error response:", errorText);
-      
-      try {
-        const errorData = JSON.parse(errorText);
+  
+    // Calculate rental days
+    const days = rentalperiod.to 
+      ? differenceInDays(rentalperiod.to, rentalperiod.from) 
+      : 1;
+  
+    const API_BASE_URL = import.meta.env.VITE_API_URL || "https://tmt-rental-backend.onrender.com";
+  
+    try {
+      // Fetch available cars
+      const carsResponse = await fetch(`${API_BASE_URL}/cars`);
+      const cars = await carsResponse.json();
+      const car = cars.find(
+        (c) => c.category === vehicleclass && c.quantity > 0
+      );
+  
+      if (!car) {
+        alert("No available cars in this category.");
+        return;
+      }
+  
+      // Make reservation (POST request)
+      const reserveResponse = await fetch(`${API_BASE_URL}/reservations`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstname,
+          lastname,
+          email,
+          home,
+          cell,
+          car_id: car.id,
+          start_date: rentalperiod.from,
+          end_date: rentalperiod.to,
+          total_price: days * car.price_per_day,
+        }),
+      });
+  
+      if (reserveResponse.ok) {
+        alert("Reservation successful!");
+        // Optionally reset form or navigate to a confirmation page
+      } else {
+        const errorData = await reserveResponse.json();
         alert(`Reservation failed: ${errorData.error}`);
       } catch (parseError) {
         console.error("Could not parse error response as JSON:", parseError);
