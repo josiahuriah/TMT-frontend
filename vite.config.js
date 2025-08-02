@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => ({
   build: {
     outDir: 'dist',
     sourcemap: mode !== 'production',
-    minify: 'terser',
+    // Remove minify: 'terser' - use default minification
     rollupOptions: {
       output: {
         manualChunks: {
