@@ -115,16 +115,24 @@ export function RentalForm() {
       ? differenceInDays(rentalperiod.to, rentalperiod.from) 
       : 1;
   
-    const API_BASE_URL = "https://tmt-rental-backend.onrender.com";
+    console.log("Form values:", values);
   
     try {
+      // Fetch available cars
+      console.log("Fetching cars from:", getApiUrl('/cars'));
       const carsResponse = await fetch(getApiUrl('/cars'));
       
+      console.log("Cars response status:", carsResponse.status);
+      
       if (!carsResponse.ok) {
+        const errorText = await carsResponse.text();
+        console.error("Cars fetch error:", errorText);
         throw new Error(`Cars fetch failed: ${carsResponse.status}`);
       }
       
       const cars = await carsResponse.json();
+      console.log("Available cars:", cars);
+      
       const car = cars.find(
         (c) => c.category === vehicleclass && c.quantity > 0
       );
@@ -133,31 +141,51 @@ export function RentalForm() {
         alert("No available cars in this category.");
         return;
       }
-
+  
+      console.log("Selected car:", car);
+  
+      // Prepare reservation data
+      const reservationData = {
+        firstname,
+        lastname,
+        email,
+        home,
+        cell,
+        car_id: car.id,
+        start_date: rentalperiod.from.toISOString().split('T')[0],
+        end_date: rentalperiod.to.toISOString().split('T')[0],
+        total_price: days * car.price_per_day,
+      };
+  
+      console.log("Sending reservation data:", reservationData);
+  
+      // Make reservation (POST request)
       const reserveResponse = await fetch(getApiUrl('/reservations'), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(reservationData),
       });
   
-      // Prepare data for checkout (don't submit reservation yet)
-      const checkoutData = {
-        ...values,
-        carId: car.id,
-        carName: car.name,
-        pricePerDay: car.price_per_day,
-        rentalDays: days,
-        totalPrice: days * car.price_per_day,
-        startDate: rentalperiod.from.toISOString().split('T')[0],
-        endDate: rentalperiod.to.toISOString().split('T')[0],
-      };
+      console.log("Reservation response status:", reserveResponse.status);
   
-      console.log("Going to checkout with data:", checkoutData);
-      
-      // Set data and show checkout
-      setSubmittedData(checkoutData);
-      setShowCheckout(true);
-  
+      if (reserveResponse.ok) {
+        const result = await reserveResponse.json();
+        console.log("Reservation success:", result);
+        alert("Reservation successful!");
+        // Optionally reset form or navigate to a confirmation page
+        form.reset();
+      } else {
+        const errorText = await reserveResponse.text();
+        console.error("Reservation error response:", errorText);
+        
+        try {
+          const errorData = JSON.parse(errorText);
+          alert(`Reservation failed: ${errorData.error}`);
+        } catch (parseError) {
+          console.error("Could not parse error response as JSON:", parseError);
+          alert(`Reservation failed: ${errorText}`);
+        }
+      }
     } catch (err) {
       console.error("Booking error:", err);
       alert("An error occurred. Please try again later.");
