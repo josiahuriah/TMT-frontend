@@ -12,20 +12,11 @@ import Footer from './components/Footer.jsx';
 
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [array, setArray] = useState([]);
 
-  const fetchAPI = async () => {
-    const response = await axios.get("http://localhost:8080/api/users");
-    setArray(response.data.users);
-  }
 
   const title = 'TMT Rentals';
   const subtitle = `Your Island's Ultimate Stop for Car Rentals, Stays and More!`;
 
-useEffect(() => {
-  fetchAPI();
-  }, [])
 
   return (
     <>
