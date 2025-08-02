@@ -50,7 +50,7 @@ const formSchema = z.object({
 export function RentalForm() {
   const [showAdditionalForm, setShowAdditionalForm] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
-  const [submittedData, setSubmittedData] = useState(null);
+  const [checkoutData, setCheckoutData] = useState(null);
   const [vehicleOptions, setVehicleOptions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -70,7 +70,6 @@ export function RentalForm() {
       termsAccepted: false,
     },
   });
-
 
   useEffect(() => {
     fetch(getApiUrl('/cars'))
@@ -92,6 +91,7 @@ export function RentalForm() {
       });
   }, []);
 
+  // This function now prepares data for checkout instead of creating reservation
   async function onSubmit(values) {
     const { 
       rentalperiod, 
@@ -115,14 +115,11 @@ export function RentalForm() {
       ? differenceInDays(rentalperiod.to, rentalperiod.from) 
       : 1;
   
-    console.log("Form values:", values);
+    console.log("Preparing checkout data...");
   
     try {
-      // Fetch available cars
-      console.log("Fetching cars from:", getApiUrl('/cars'));
+      // Fetch available cars to get pricing and car details
       const carsResponse = await fetch(getApiUrl('/cars'));
-      
-      console.log("Cars response status:", carsResponse.status);
       
       if (!carsResponse.ok) {
         const errorText = await carsResponse.text();
@@ -131,8 +128,6 @@ export function RentalForm() {
       }
       
       const cars = await carsResponse.json();
-      console.log("Available cars:", cars);
-      
       const car = cars.find(
         (c) => c.category === vehicleclass && c.quantity > 0
       );
@@ -142,64 +137,51 @@ export function RentalForm() {
         return;
       }
   
-      console.log("Selected car:", car);
-  
-      // Prepare reservation data
-      const reservationData = {
+      // Prepare checkout data (not reservation yet)
+      const checkoutInfo = {
+        // User details
         firstname,
         lastname,
         email,
         home,
         cell,
-        car_id: car.id,
-        start_date: rentalperiod.from.toISOString().split('T')[0],
-        end_date: rentalperiod.to.toISOString().split('T')[0],
-        total_price: days * car.price_per_day,
+        // Car details
+        carId: car.id,
+        carName: car.name,
+        vehicleclass,
+        // Rental details
+        startDate: rentalperiod.from.toISOString().split('T')[0],
+        endDate: rentalperiod.to.toISOString().split('T')[0],
+        rentalDays: days,
+        pricePerDay: car.price_per_day,
+        totalPrice: days * car.price_per_day,
+        // Additional info
+        additionalDriver: values.additionaldriverbool === "true" ? values.additionaldriver : null,
       };
   
-      console.log("Sending reservation data:", reservationData);
-  
-      // Make reservation (POST request)
-      const reserveResponse = await fetch(getApiUrl('/reservations'), {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(reservationData),
-      });
-  
-      console.log("Reservation response status:", reserveResponse.status);
-  
-      if (reserveResponse.ok) {
-        const result = await reserveResponse.json();
-        console.log("Reservation success:", result);
-        alert("Reservation successful!");
-        // Optionally reset form or navigate to a confirmation page
-        form.reset();
-      } else {
-        const errorText = await reserveResponse.text();
-        console.error("Reservation error response:", errorText);
-        
-        try {
-          const errorData = JSON.parse(errorText);
-          alert(`Reservation failed: ${errorData.error}`);
-        } catch (parseError) {
-          console.error("Could not parse error response as JSON:", parseError);
-          alert(`Reservation failed: ${errorText}`);
-        }
-      }
+      console.log("Proceeding to checkout with data:", checkoutInfo);
+      
+      // Set checkout data and show checkout form
+      setCheckoutData(checkoutInfo);
+      setShowCheckout(true);
+      
     } catch (err) {
-      console.error("Booking error:", err);
-      alert("An error occurred. Please try again later.");
+      console.error("Error preparing checkout:", err);
+      alert("An error occurred while preparing checkout. Please try again.");
     }
   }
 
-
   const handleCheckoutSuccess = () => {
     setShowCheckout(false);
-    alert("Booking successful! Car reserved.");
+    setCheckoutData(null);
+    form.reset();
+    alert("Booking successful! Your reservation has been confirmed.");
   };
 
   const handleCheckoutClose = () => {
     setShowCheckout(false);
+    setCheckoutData(null);
+    // Don't reset form - user can go back and modify
   };
 
   if (loading) return <p>Loading vehicle options...</p>;
@@ -271,7 +253,6 @@ export function RentalForm() {
                   <FormMessage />
                 </FormItem>
               )} />
-              {/* Additional driver and rental period fields remain largely unchanged */}
               <FormField control={form.control} name="additionaldriverbool" render={({ field }) => (
                 <FormItem >
                   <FormLabel className="rental-form-label">Will there be additional drivers?</FormLabel>
@@ -315,7 +296,7 @@ export function RentalForm() {
             <div className="p-4 border rounded-lg">
               <h2 className="text-lg font-bold user-terms">Important Things To Note</h2>
               <p className="user-terms-text">
-              <br /><br />• A valid driver’s license is required at the time of pickup for verification.
+              <br /><br />• A valid driver's license is required at the time of pickup for verification.
               <br />
 • $10 fee for pick-up and drop-off beyond Deadmans cay
 <br /><br /><br />
@@ -381,7 +362,11 @@ Vehicle Return
           )}
         </form>
       ) : (
-        <CheckoutForm formData={submittedData} onClose={handleCheckoutClose} onSuccess={handleCheckoutSuccess}/>
+        <CheckoutForm 
+          formData={checkoutData} 
+          onClose={handleCheckoutClose} 
+          onSuccess={handleCheckoutSuccess}
+        />
       )}
     </Form>
   );
