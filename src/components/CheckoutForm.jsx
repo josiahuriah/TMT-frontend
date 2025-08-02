@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Button } from "./ui/button.jsx";
 import { Input } from "./ui/input.jsx"; 
+import { format } from "date-fns";
 
 const CheckoutForm = ({ formData, onClose, onSuccess }) => {
     const [cardNumber, setCardNumber] = useState("");
@@ -16,36 +17,46 @@ const CheckoutForm = ({ formData, onClose, onSuccess }) => {
       setLoading(true);
       setError(null);
   
-      const paymentData = {
-        car_id: formData.carId,
-        category: formData.vehicleclass,
-        start_date: formData.rentalperiod.from.toISOString().split("T")[0],
-        end_date: formData.rentalperiod.to.toISOString().split("T")[0],
-        card_number: cardNumber,
-        expiry: expiry,
-        cvc: cvc,
-        total_price: formData.totalPrice,
-      };
-  
       try {
-        const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5001";
-        const response = await fetch(`${API_BASE_URL}/process-payment`, {
+        const API_BASE_URL = "https://tmt-rental-backend.onrender.com";
+        
+        // Create the reservation
+        const reservationData = {
+          firstname: formData.firstname,
+          lastname: formData.lastname,
+          email: formData.email,
+          home: formData.home,
+          cell: formData.cell,
+          car_id: formData.carId,
+          start_date: formData.startDate,
+          end_date: formData.endDate,
+          total_price: formData.totalPrice,
+        };
+
+        console.log("Submitting reservation:", reservationData);
+
+        const response = await fetch(`${API_BASE_URL}/reservations`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(paymentData),
+          body: JSON.stringify(reservationData),
         });
   
         if (!response.ok) {
-          throw new Error("Payment failed");
+          const errorText = await response.text();
+          try {
+            const errorData = JSON.parse(errorText);
+            throw new Error(errorData.error || "Reservation failed");
+          } catch (parseError) {
+            throw new Error(errorText || "Reservation failed");
+          }
         }
   
         const result = await response.json();
-        if (result.success) {
-          onSuccess();
-        } else {
-          setError(result.error || "Payment processing error");
-        }
+        console.log("Reservation successful:", result);
+        onSuccess();
+        
       } catch (err) {
+        console.error("Payment/Reservation error:", err);
         setError(err.message);
       } finally {
         setLoading(false);
@@ -55,27 +66,58 @@ const CheckoutForm = ({ formData, onClose, onSuccess }) => {
     return (
       <div className="checkout container">
         <h2 className="car-cards-title">Checkout</h2>
-        <p>Vehicle Class: {formData.vehicleclass}</p>
-        <p>Rental Period: {formData.rentalperiod.from.toDateString()} to {formData.rentalperiod.to.toDateString()}</p>
-        <p>Total Price: ${formData.totalPrice}</p>
+        
+        {/* Booking Summary */}
+        <div className="booking-summary" style={{ marginBottom: "20px", padding: "15px", border: "1px solid #ddd", borderRadius: "5px" }}>
+          <h3>Booking Summary</h3>
+          <p><strong>Name:</strong> {formData.firstname} {formData.lastname}</p>
+          <p><strong>Email:</strong> {formData.email}</p>
+          <p><strong>Vehicle:</strong> {formData.carName} ({formData.vehicleclass})</p>
+          <p><strong>Rental Period:</strong> {format(new Date(formData.startDate), "MMM dd, yyyy")} to {format(new Date(formData.endDate), "MMM dd, yyyy")}</p>
+          <p><strong>Duration:</strong> {formData.rentalDays} days</p>
+          <p><strong>Rate:</strong> ${formData.pricePerDay}/day</p>
+          <p><strong>Total Price:</strong> ${formData.totalPrice}</p>
+        </div>
+
         <form onSubmit={handleSubmit}>
-          <div>
+          <div style={{ marginBottom: "15px" }}>
             <label>Card Number</label>
-            <Input value={cardNumber} onChange={(e) => setCardNumber(e.target.value)} placeholder="1234 5678 9012 3456" required />
+            <Input 
+              value={cardNumber} 
+              onChange={(e) => setCardNumber(e.target.value)} 
+              placeholder="1234 5678 9012 3456" 
+              required 
+            />
           </div>
-          <div>
+          <div style={{ marginBottom: "15px" }}>
             <label>Expiry (MM/YY)</label>
-            <Input value={expiry} onChange={(e) => setExpiry(e.target.value)} placeholder="MM/YY" required />
+            <Input 
+              value={expiry} 
+              onChange={(e) => setExpiry(e.target.value)} 
+              placeholder="MM/YY" 
+              required 
+            />
           </div>
-          <div>
+          <div style={{ marginBottom: "15px" }}>
             <label>CVC</label>
-            <Input value={cvc} onChange={(e) => setCvc(e.target.value)} placeholder="123" required />
+            <Input 
+              value={cvc} 
+              onChange={(e) => setCvc(e.target.value)} 
+              placeholder="123" 
+              required 
+            />
           </div>
-          {error && <p style={{ color: "red" }}>{error}</p>}
-          <Button type="submit" disabled={loading}>
-            {loading ? "Processing..." : "Pay Now"}
-          </Button>
-          <Button type="button" onClick={onClose} style={{ marginLeft: "10px" }}>Cancel</Button>
+          
+          {error && <p style={{ color: "red", marginBottom: "15px" }}>{error}</p>}
+          
+          <div style={{ display: "flex", gap: "10px" }}>
+            <Button type="submit" disabled={loading}>
+              {loading ? "Processing..." : `Complete Payment ($${formData.totalPrice})`}
+            </Button>
+            <Button type="button" onClick={onClose} variant="outline">
+              Cancel
+            </Button>
+          </div>
         </form>
       </div>
     );

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { getApiUrl } from '../config/api.js';
 import { useNavigate } from "react-router-dom";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "./ui/card.jsx";
 import { Button } from "./ui/button.jsx";
@@ -15,21 +16,21 @@ const CarCards = () => {
             ? "http://localhost:5001/car-categories"
             : "https://tmt-rental-backend.onrender.com/car-categories";
   
-    useEffect(() => {
-      const fetchCars = async () => {
-        try {
-          const response = await fetch(API_URL);
-          const data = await response.json();
-          setCarCards(data);
-        } catch (error) {
-          console.error("Error fetching cars:", error);
-        } finally {
-          setLoading(false);
-        }
-      };
-  
-      fetchCars();
-    }, []);
+  useEffect(() => {
+    const fetchCars = async () => {
+      try {
+        const response = await fetch(getApiUrl('/car-categories'));
+        const data = await response.json();
+        setCarCards(data);
+      } catch (error) {
+        console.error("Error fetching cars:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCars();
+  }, []);
   
     if (loading) {
       return <p>Loading cars...</p>;

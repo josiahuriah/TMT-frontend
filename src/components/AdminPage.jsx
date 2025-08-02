@@ -2,7 +2,7 @@ import { Admin, Resource, ListGuesser, fetchUtils } from "react-admin";
 import simpleRestProvider from "ra-data-simple-rest";
 import { ReservationList } from "./ReservationList";
 
-const API_BASE_URL = "https://tmt-rental-backend.onrender.com";  // Hardcode temporarily
+const API_BASE_URL = "https://tmt-rental-backend.onrender.com";  // Hardcode 
 
 const httpClient = (url, options = {}) => {
   if (!options.headers) {

@@ -27,6 +27,7 @@ import {
 import { addDays, differenceInDays } from "date-fns";
 import CheckoutForm from "./CheckoutForm";
 import SmallCarCards from "./SmallCarCards"
+import { getApiUrl } from '../config/api.js';
 
 const phoneRegex = new RegExp(/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/);
 
@@ -70,12 +71,9 @@ export function RentalForm() {
     },
   });
 
-  // Fetch vehicle categories from the backend
+
   useEffect(() => {
-    const API_BASE_URL = "https://tmt-rental-backend.onrender.com"
-    console.log("Fetching from:", `${API_BASE_URL}/cars`);
-    
-    fetch(`${API_BASE_URL}/cars`)
+    fetch(getApiUrl('/cars'))
       .then((res) => {
         if (!res.ok) {
           throw new Error(`HTTP error! Status: ${res.status}`);
@@ -117,27 +115,16 @@ export function RentalForm() {
       ? differenceInDays(rentalperiod.to, rentalperiod.from) 
       : 1;
   
-    const API_BASE_URL = "https://tmt-rental-backend.onrender.com"; // Use your exact URL
-  
-    console.log("API_BASE_URL:", API_BASE_URL);
-    console.log("Form values:", values);
+    const API_BASE_URL = "https://tmt-rental-backend.onrender.com";
   
     try {
-      // Fetch available cars
-      console.log("Fetching cars from:", `${API_BASE_URL}/cars`);
-      const carsResponse = await fetch(`${API_BASE_URL}/cars`);
-      
-      console.log("Cars response status:", carsResponse.status);
+      const carsResponse = await fetch(getApiUrl('/cars'));
       
       if (!carsResponse.ok) {
-        const errorText = await carsResponse.text();
-        console.error("Cars fetch error:", errorText);
         throw new Error(`Cars fetch failed: ${carsResponse.status}`);
       }
       
       const cars = await carsResponse.json();
-      console.log("Available cars:", cars);
-      
       const car = cars.find(
         (c) => c.category === vehicleclass && c.quantity > 0
       );
@@ -146,55 +133,37 @@ export function RentalForm() {
         alert("No available cars in this category.");
         return;
       }
-  
-      console.log("Selected car:", car);
-  
-      // Prepare reservation data
-      const reservationData = {
-        firstname,
-        lastname,
-        email,
-        home,
-        cell,
-        car_id: car.id,
-        start_date: rentalperiod.from.toISOString().split('T')[0],
-        end_date: rentalperiod.to.toISOString().split('T')[0],
-        total_price: days * car.price_per_day,
-      };
-  
-      console.log("Sending reservation data:", reservationData);
-  
-      // Make reservation (POST request)
-      const reserveResponse = await fetch(`${API_BASE_URL}/reservations`, {
+
+      const reserveResponse = await fetch(getApiUrl('/reservations'), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(reservationData),
       });
   
-      console.log("Reservation response status:", reserveResponse.status);
+      // Prepare data for checkout (don't submit reservation yet)
+      const checkoutData = {
+        ...values,
+        carId: car.id,
+        carName: car.name,
+        pricePerDay: car.price_per_day,
+        rentalDays: days,
+        totalPrice: days * car.price_per_day,
+        startDate: rentalperiod.from.toISOString().split('T')[0],
+        endDate: rentalperiod.to.toISOString().split('T')[0],
+      };
   
-      if (reserveResponse.ok) {
-        const result = await reserveResponse.json();
-        console.log("Reservation success:", result);
-        alert("Reservation successful!");
-        // Optionally reset form or navigate to a confirmation page
-      } else {
-        const errorText = await reserveResponse.text();
-        console.error("Reservation error response:", errorText);
-        
-        try {
-          const errorData = JSON.parse(errorText);
-          alert(`Reservation failed: ${errorData.error}`);
-        } catch (parseError) {
-          console.error("Could not parse error response as JSON:", parseError);
-          alert(`Reservation failed: ${errorText}`);
-        }
-      }
+      console.log("Going to checkout with data:", checkoutData);
+      
+      // Set data and show checkout
+      setSubmittedData(checkoutData);
+      setShowCheckout(true);
+  
     } catch (err) {
       console.error("Booking error:", err);
       alert("An error occurred. Please try again later.");
     }
   }
+
 
   const handleCheckoutSuccess = () => {
     setShowCheckout(false);

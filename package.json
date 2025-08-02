@@ -6,8 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:staging": "vite build --mode staging",
+    "build:prod": "vite build --mode production",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "lint:fix": "eslint . --fix",
+    "preview": "vite preview",
+    "analyze": "vite build --mode production && npx vite-bundle-analyzer dist"
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.3",

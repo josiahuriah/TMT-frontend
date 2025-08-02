@@ -1,33 +1,63 @@
 import React from 'react';
-import {BrowserRouter, Route, Routes, Link, NavLink} from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer.jsx';
-import RentalPage from '../components/RentalPage';
-import AboutUs from '../components/AboutUs';
-import Contact from '../components/Contact.jsx';
 import NotFoundPage from '../components/NotFoundPage';
-import AdminPage from '../components/AdminPage.jsx';
-import { Checkout } from '../components/Checkout.jsx';
-import App from '../App.jsx'
-
-
+import App from '../App.jsx';
+import ErrorBoundary from '../components/ErrorBoundary';
+import { 
+  AdminPage, 
+  Contact, 
+  AboutUs, 
+  RentalPage,
+  LazyWrapper 
+} from '../components/LazyComponents';
 
 const AppRouter = () => (
-    <BrowserRouter>
-            <Header />
-    <div id='body'>
+  <BrowserRouter>
+    <ErrorBoundary>
+      <Header />
+      <div id='body'>
         <Routes>
-            <Route path='/' element={<App/>}></Route>
-            <Route path='/rental' element={<RentalPage/>}></Route>
-            <Route path='/about-us' element={<AboutUs/>}></Route>
-            <Route path='/contact' element={<Contact/>}></Route>
-            <Route path='/contact' element={<Checkout/>}></Route>
-            <Route path='/admin/*' element={<AdminPage />} />
-            <Route path='/*' element={<NotFoundPage/>}></Route>
+          <Route path='/' element={<App />} />
+          <Route 
+            path='/rental' 
+            element={
+              <LazyWrapper>
+                <RentalPage />
+              </LazyWrapper>
+            } 
+          />
+          <Route 
+            path='/about-us' 
+            element={
+              <LazyWrapper>
+                <AboutUs />
+              </LazyWrapper>
+            } 
+          />
+          <Route 
+            path='/contact' 
+            element={
+              <LazyWrapper>
+                <Contact />
+              </LazyWrapper>
+            } 
+          />
+          <Route 
+            path='/admin/*' 
+            element={
+              <LazyWrapper>
+                <AdminPage />
+              </LazyWrapper>
+            } 
+          />
+          <Route path='/*' element={<NotFoundPage />} />
         </Routes>
-    </div>
-            <Footer />
-    </BrowserRouter>
+      </div>
+      <Footer />
+    </ErrorBoundary>
+  </BrowserRouter>
 );
 
-export default AppRouter
+export default AppRouter;

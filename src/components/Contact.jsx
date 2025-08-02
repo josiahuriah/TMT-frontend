@@ -14,8 +14,8 @@ import {
   FormMessage,
 } from "./ui/form.jsx";
 import { Input } from "./ui/input.jsx";
-import { Textarea } from "@/components/ui/textarea" // Assuming you have a Textarea component
-import TMTLogo from "/assets/logo3.png"; // Adjust path if different
+import { Textarea } from "@/components/ui/textarea" 
+import TMTLogo from "/assets/logo3.png"; 
 
 // Form schema with validation
 const formSchema = z.object({

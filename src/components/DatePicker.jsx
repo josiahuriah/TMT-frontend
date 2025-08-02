@@ -36,7 +36,7 @@ export const DatePickerWithRange = forwardRef(({ className, value, onChange }, r
   };
 
   return (
-    <div className={cn("grid gap-2 relative", className)}> {/* Add relative here */}
+    <div className={cn("grid gap-2 relative", className)}> {/* Add relative later */}
       <Popover>
         <PopoverTrigger asChild>
           <Button

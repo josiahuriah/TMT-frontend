@@ -38,7 +38,7 @@ export function Checkout({ formData }) {
       paymentInfo: cardInfo
     };
     console.log("Checkout Submitted:", checkoutData);
-    // Here you would typically send this data to your payment processor
+    // Code to later send to payment processor
   };
 
   return (
