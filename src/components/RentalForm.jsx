@@ -52,6 +52,7 @@ export function RentalForm() {
   const [showCheckout, setShowCheckout] = useState(false);
   const [checkoutData, setCheckoutData] = useState(null);
   const [vehicleOptions, setVehicleOptions] = useState([]);
+  const [carCategories, setCarCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 

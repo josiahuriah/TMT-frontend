@@ -17,10 +17,22 @@
   }
 
   .input-form-field {
-    font-size: $m-size;
-    padding: 0.5rem; // Add padding for inputs
-    width: 100%; // Ensure full width within flex items
-  }
+      font-size: $m-size;
+      padding: 1rem 1.2rem; // Increased padding for better clickability
+      width: 100%; // Ensure full width within flex items
+      min-height: 4.5rem; // Minimum height for better visibility
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        border-color: #999;
+      }
+      
+      &:focus {
+        border-color: #333;
+        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+      }
+    }
 
   .name-field {
     min-width: 100%;

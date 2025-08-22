@@ -36,7 +36,7 @@ export const DatePickerWithRange = forwardRef(({ className, value, onChange }, r
   };
 
   return (
-    <div className={cn("grid gap-2 relative", className)}> {/* Add relative later */}
+    <div className={cn("grid gap-2", className)}>
       <Popover>
         <PopoverTrigger asChild>
           <Button
@@ -44,7 +44,7 @@ export const DatePickerWithRange = forwardRef(({ className, value, onChange }, r
             id="date"
             variant="outline"
             className={cn(
-              "w-[300px] justify-start text-left font-normal",
+              "w-full justify-start text-left font-normal min-h-[4.5rem] text-base px-5",
               !date && "text-muted-foreground"
             )}
             onClick={(e) => {
@@ -52,7 +52,7 @@ export const DatePickerWithRange = forwardRef(({ className, value, onChange }, r
               console.log("Date picker button clicked");
             }}
           >
-            <CalendarIcon className="mr-2 h-4 w-4" />
+            <CalendarIcon className="mr-3 h-5 w-5" />
             {date?.from ? (
               date.to ? (
                 <>
@@ -63,7 +63,7 @@ export const DatePickerWithRange = forwardRef(({ className, value, onChange }, r
                 format(date.from, "LLL dd, y")
               )
             ) : (
-              <span>Pick a date</span>
+              <span>Pick a date range</span>
             )}
           </Button>
         </PopoverTrigger>
