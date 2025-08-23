@@ -16,17 +16,24 @@ const CheckoutForm = ({ formData, onClose, onSuccess }) => {
     
     // Fetch vehicle image based on selected class
     useEffect(() => {
-      fetch(getApiUrl('/car-categories'))
-        .then(res => res.json())
-        .then(categories => {
-          const selectedCategory = categories.find(
-            cat => cat.title === formData.vehicleclass
-          );
-          if (selectedCategory) {
-            setVehicleImage(selectedCategory.image);
+      const fetchVehicleImage = async () => {
+        try {
+          const response = await fetch(getApiUrl('/car-categories'));
+          if (response.ok) {
+            const categories = await response.json();
+            const selectedCategory = categories.find(
+              cat => cat.title === formData.vehicleclass
+            );
+            if (selectedCategory) {
+              setVehicleImage(selectedCategory.image);
+            }
           }
-        })
-        .catch(err => console.error("Error fetching vehicle image:", err));
+        } catch (err) {
+          console.error("Error fetching vehicle image:", err);
+        }
+      };
+      
+      fetchVehicleImage();
     }, [formData.vehicleclass]);
   
     const handleSubmit = async (e) => {
@@ -88,7 +95,7 @@ const CheckoutForm = ({ formData, onClose, onSuccess }) => {
       <div className="checkout container">
         <h2 className="car-cards-title">Checkout</h2>
         
-        {/* Booking Summary */}
+        {/* Booking Summary with Vehicle Image */}
         <div className="booking-summary" style={{ 
           marginBottom: "30px", 
           padding: "20px", 
@@ -97,6 +104,38 @@ const CheckoutForm = ({ formData, onClose, onSuccess }) => {
           backgroundColor: "#f9f9f9"
         }}>
           <h3 style={{ marginBottom: "15px", fontSize: "1.2rem", fontWeight: "600" }}>Booking Summary</h3>
+          
+          {/* Vehicle Image Section */}
+          {vehicleImage && (
+            <div style={{ 
+              textAlign: "center", 
+              marginBottom: "20px",
+              padding: "15px",
+              backgroundColor: "white",
+              borderRadius: "8px"
+            }}>
+              <img 
+                src={vehicleImage} 
+                alt={formData.vehicleclass}
+                style={{ 
+                  maxWidth: "200px", 
+                  maxHeight: "150px", 
+                  objectFit: "contain",
+                  margin: "0 auto",
+                  display: "block"
+                }}
+              />
+              <p style={{ 
+                marginTop: "10px", 
+                fontWeight: "600", 
+                fontSize: "1.1rem", 
+                color: "#333" 
+              }}>
+                {formData.vehicleclass}
+              </p>
+            </div>
+          )}
+          
           <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "10px", fontSize: "0.9rem" }}>
             <strong>Name:</strong>
             <span>{formData.firstname} {formData.lastname}</span>
