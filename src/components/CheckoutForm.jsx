@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "./ui/button.jsx";
 import { Input } from "./ui/input.jsx"; 
 import { format } from "date-fns";
@@ -12,6 +12,22 @@ const CheckoutForm = ({ formData, onClose, onSuccess }) => {
     const [cvc, setCvc] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [vehicleImage, setVehicleImage] = useState(null);
+    
+    // Fetch vehicle image based on selected class
+    useEffect(() => {
+      fetch(getApiUrl('/car-categories'))
+        .then(res => res.json())
+        .then(categories => {
+          const selectedCategory = categories.find(
+            cat => cat.title === formData.vehicleclass
+          );
+          if (selectedCategory) {
+            setVehicleImage(selectedCategory.image);
+          }
+        })
+        .catch(err => console.error("Error fetching vehicle image:", err));
+    }, [formData.vehicleclass]);
   
     const handleSubmit = async (e) => {
       e.preventDefault();
